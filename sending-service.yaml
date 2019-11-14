@@ -1,0 +1,174 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sekilxc1234
+  labels:
+    app.kubernetes.io/name: "mtas-st-chart-sending"
+    #    app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+    helm.sh/chart: {{ include "mtas-st-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+        #type: {{ .Values.service.type }}
+  type: NodePort
+  ports:
+          #    - port: {{ .Values.service.port }}
+          #      targetPort: http
+          #     protocol: TCP
+          #     name: http
+    - port: 22
+      targetPort: 22
+      protocol: TCP
+      name: ssh
+    - targetPort: 14920
+      port: 14920
+      nodePort: 14920
+      name: sipp14920
+    - targetPort: 14921
+      port: 14921
+      nodePort: 14921
+      name: sipp14921
+    - targetPort: 14349
+      port: 14349
+      nodePort: 14349
+      name: sipp14349
+    - targetPort: 14029
+      port: 14029
+      nodePort: 14029
+      name: sipp14029
+    - targetPort: 14990
+      port: 14990
+      nodePort: 14990
+      name: sipp14990
+    - targetPort: 14030
+      port: 14030
+      nodePort: 14030
+      name: sipp14030
+    - targetPort: 14350
+      port: 14350
+      nodePort: 14350
+      name: sipp14350
+    - targetPort: 14991
+      port: 14991
+      nodePort: 14991
+      name: sipp14991
+    - targetPort: 14351
+      port: 14351
+      nodePort: 14351
+      name: sipp14351
+    - targetPort: 14031
+      port: 14031
+      nodePort: 14031
+      name: sipp14031
+    - targetPort: 14672
+      port: 14672
+      nodePort: 14672
+      name: sipp14672
+    - targetPort: 14032
+      port: 14032
+      nodePort: 14032
+      name: sipp14032
+    - targetPort: 14000
+      port: 14000
+      nodePort: 14000
+      name: sipp14000
+    - targetPort: 14001
+      port: 14001
+      nodePort: 14001
+      name: sipp14001
+    - targetPort: 14673
+      port: 14673
+      nodePort: 14673
+      name: sipp14673
+    - targetPort: 14962
+      port: 14962
+      nodePort: 14962
+      name: sipp14962
+    - targetPort: 14002
+      port: 14002
+      nodePort: 14002
+      name: sipp14002
+    - targetPort: 14963
+      port: 14963
+      nodePort: 14963
+      name: sipp14963
+    - targetPort: 14003
+      port: 14003
+      nodePort: 14003
+      name: sipp14003
+    - targetPort: 14228
+      port: 14228
+      nodePort: 14228
+      name: sipp14228
+    - targetPort: 14964
+      port: 14964
+      nodePort: 14964
+      name: sipp14964
+    - targetPort: 14229
+      port: 14229
+      nodePort: 14229
+      name: sipp14229
+    - targetPort: 14262
+      port: 14262
+      nodePort: 14262
+      name: sipp14262
+    - targetPort: 14263
+      port: 14263
+      nodePort: 14263
+      name: sipp14263
+    - targetPort: 14655
+      port: 14655
+      nodePort: 14655
+      name: sipp14655
+    - targetPort: 14656
+      port: 14656
+      nodePort: 14656
+      name: sipp14656
+    - targetPort: 14372
+      port: 14372
+      nodePort: 14372
+      name: sipp14372
+    - targetPort: 15269
+      port: 15269
+      nodePort: 15269
+      name: sipp15269
+    - targetPort: 14245
+      port: 14245
+      nodePort: 14245
+      name: sipp14245
+    - targetPort: 14373
+      port: 14373
+      nodePort: 14373
+      name: sipp14373
+    - targetPort: 15142
+      port: 15142
+      nodePort: 15142
+      name: sipp15142
+    - targetPort: 15270
+      port: 15270
+      nodePort: 15270
+      name: sipp15270
+    - targetPort: 14374
+      port: 14374
+      nodePort: 14374
+      name: sipp14374
+    - targetPort: 14246
+      port: 14246
+      nodePort: 14246
+      name: sipp14246
+    - targetPort: 14919
+      port: 14919
+      nodePort: 14919
+      name: sipp14919
+    - targetPort: 15143
+      port: 15143
+      nodePort: 15143
+      name: sipp15143
+    #- targetPort: 5666
+    #  port: 5666
+    #  nodePort: 5666
+    #  name: sipp5666
+  selector:
+    app.kubernetes.io/name: "mtas-st-chart-sending"
+    #    app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
