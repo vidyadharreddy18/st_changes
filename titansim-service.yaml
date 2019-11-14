@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sekilxc1236
+  labels:
+    app.kubernetes.io/name: "mtas-st-chart-titansim"
+    #    app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+    helm.sh/chart: {{ include "mtas-st-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+        #  type: {{ .Values.service.type }}
+  type: NodePort
+  ports:
+    - port: 22
+      targetPort: 22
+      name: ssh
+    - targetPort: 3880
+      port: 3880
+      nodePort: 3880
+      name: titansim
+    - targetPort: 3881
+      port: 3881
+      nodePort: 3881
+      name: titansim1
+    - targetPort: 5065
+      port: 5065
+      nodePort: 5065
+      name: titansim2
+    - targetPort: 3882
+      port: 3882
+      nodePort: 3882
+      name: ti3
+    - targetPort: 3883
+      port: 3883
+      nodePort: 3883
+      name: tt4
+    - targetPort: 3884
+      port: 3884
+      nodePort: 3884
+      name: tt5
+    - targetPort: 3885
+      port: 3885
+      nodePort: 3885
+      name: tt6
+    - targetPort: 3886
+      port: 3886
+      nodePort: 3886
+      name: tt7
+    - targetPort: 3887
+      port: 3887
+      nodePort: 3887
+      name: tt8
+    - targetPort: 3888
+      port: 3888
+      nodePort: 3888
+      name: tt9
+    - targetPort: 6010
+      port: 6010
+      nodePort: 6010
+      name: tt10
+    - targetPort: 4001
+      port: 4001
+      nodePort: 4001
+      name: tt11
+    - targetPort: 1027 
+      port: 1027
+      nodePort: 1027
+      name: tt12
+    - targetPort: 43075
+      port: 43075
+      nodePort: 43075
+      name: tt13
+    - targetPort: 1028
+      port: 1028
+      nodePort: 1028
+      name: tt14
+    - targetPort: 25095
+      port: 25095
+      nodePort: 25095
+      name: tt15
+    #- targetPort: 6010
+    #  port: 6010
+    #  nodePort: 6010
+    #  name: tt56
+    #- targetPort: 5666
+    #  port: 5666
+    #  nodePort: 5666
+    #  name: tt16
+    - targetPort: 9998
+      port: 9998
+      nodePort: 9998
+      name: tt17
+  selector:
+    app.kubernetes.io/name: "mtas-st-chart-titansim"
+    #    app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
