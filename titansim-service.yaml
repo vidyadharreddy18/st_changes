@@ -12,6 +12,49 @@ spec:
         #  type: {{ .Values.service.type }}
   type: NodePort
   ports:
+    - port: 3872
+      targetPort: 3872
+      name: hss
+    - port: 3870
+      targetPort: 3870
+      name: slf
+    - port: 2994
+      targetPort: 2994
+      name: mrfp1
+    - port: 2946
+      targetPort: 2946
+      name: mrfp2
+    - port: 2948
+      targetPort: 2948
+      name: mrfp4
+    - port: 2950
+      targetPort: 2950
+      name: mrfp4
+    - port: 5067
+      targetPort: 5067
+      name: mrfc1
+    - port: 5069
+      targetPort: 5069
+      name: mrfc2
+    - port: 5071
+      targetPort: 5071
+      name: mrfc3
+     - port: 5073
+      targetPort: 5073
+      name: mrfc4
+    - port: 9990
+      targetPort: 9990
+      name: cns1
+    - port: 6669
+      targetPort: 6669
+      name: scp1cpmanager
+    - port: 2905
+      targetPort: 2905
+      name: scpp1
+    - port: 9998
+      targetPort: 9998
+      name: tcp
+      
     - port: 22
       targetPort: 22
       name: ssh
