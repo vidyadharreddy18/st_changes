@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: titansim
+spec:
+ hostNetwork: true
+ initContainers:
+ - name: gitclone
+   image: armdocker.rnd.ericsson.se/sandbox/ezpedvi/mtas-traffic-handler/titansim:bare_v1  #here we can use any image with git and ssh configs
+   command: ["git", "clone", "ssh://ezpedvi@gerrit.ericsson.se:29418/mtas/st", "/local/scratch/root/st"]
+   volumeMounts:
+   - mountPath: /local/scratch/root/st
+     name: git
+ containers:
+ - name: titansim
+   image: armdocker.rnd.ericsson.se/sandbox/ezpedvi/mtas-traffic-handler/titansim:bare_v1
+   command: [ "/bin/bash", "-ce", "tail -f /dev/null" ]
+   env:
+   - name: http_proxy
+     value: http://inet-proxy.k2.ericsson.se:8080
+   - name: https_proxy
+     value: http://inet-proxy.k2.ericsson.se:8080
+   imagePullPolicy: Always
+ volumes:
+ - emptyDir: {}
+   name: git
