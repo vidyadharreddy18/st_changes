@@ -1,0 +1,45 @@
+# This dockerfile creates a mtas System Test docker container
+FROM armdocker.rnd.ericsson.se/baseimages/sles:11sp3 AS build-env
+MAINTAINER yawar.hadi@ericsson.com
+
+# Refresh package information and installation of dependencies.
+RUN zypper --gpg-auto-import-keys refresh \ 
+    && /bin/true \
+    && zypper -n install \
+                        iputils \
+                        less \
+                        libopenssl0_9_8 \
+                        libopenssl-devel \
+                        lksctp-tools \
+                        lksctp-tools-devel \
+                        network-autoconfig \
+                        tcpd \
+                        openssh \
+                        rsync \
+                        tar \
+                        vim \
+                        wget \
+                        tcsh \
+                        finger \
+                        expect \
+                        tcpdump \
+                        python \
+                        python-argparse \
+                        perl \
+                        telnet \
+                        git 
+
+COPY ["starter-script.sh", ".bash_init", "login.expect", "/"]
+#I am copying my ssh key to be able to clone the git repo
+COPY ["id_rsa_git", "config", "/root/.ssh/"]
+
+#ssh fix
+RUN echo 'root:rootroot' | chpasswd \
+    && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \ 
+    && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+    && mkdir -p /local/scratch/root \
+    && chmod 600 /root/.ssh/id_rsa_git
+ 
+WORKDIR /
+ENTRYPOINT ["/bin/bash"]
+CMD ["--init-file","/root/.bash_init"]
