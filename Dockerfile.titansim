@@ -1,0 +1,43 @@
+# This dockerfile creates a mtas System Test docker container
+
+# Refresh package information and installation of dependencies.
+RUN zypper --gpg-auto-import-keys refresh \ 
+    && /bin/true \
+    && zypper -n install \
+                        iputils \
+                        less \
+                        libopenssl0_9_8 \
+                        libopenssl-devel \
+                        lksctp-tools \
+                        lksctp-tools-devel \
+                        network-autoconfig \
+                        tcpd \
+                        openssh \
+                        rsync \
+                        tar \
+                        vim \
+                        wget \
+                        tcsh \
+                        finger \
+                        expect \
+                        tcpdump \
+                        python \
+                        python-argparse \
+                        perl \
+                        telnet \
+                        git 
+
+COPY [".titansim_bash_init", "titansim-starter-script.tcsh", "login.expect", "portable_tarball", "/"]
+#I am copying my ssh key to be able to clone the git repo
+COPY ["id_rsa", "config", "/root/.ssh/"]
+
+#ssh fix
+RUN echo 'root:rootroot' | chpasswd \
+    && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \ 
+    && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+    && mkdir -p /local/scratch/root \
+    && chmod 600 /root/.ssh/id_rsa
+ 
+WORKDIR /
+ENTRYPOINT ["/bin/bash"]
+CMD ["--init-file","/root/.titansim_bash_init"]
