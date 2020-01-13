@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-mtasst-sending
+  labels:
+    app.kubernetes.io/name: "mtas-st-chart-sending"
+    #    app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+    helm.sh/chart: {{ include "mtas-st-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    #app.kubernetes.io/instance: re-mtas-system-test
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "mtas-st-chart-sending"
+      #      app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "mtas-st-chart-sending"
+        #        app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      hostNetwork: true
+      dnspolicy: ClusterFirstWithHostNet
+      containers:
+        - name: sekilxc1235
+          image: "{{ .Values.sendingImage.repository }}:{{ .Values.sendingImage.tag }}"
+          imagePullPolicy: {{ .Values.sendingImage.pullPolicy }}
+          tty: true
+          stdin_open: true
+          #command: [ "/bin/bash", "-ce", "tail -f /dev/null" ]
+          ports:
+            - name: ssh
+              containerPort: 22
+              targetPort: 22
+              protocol: TCP
+          env:
+          - name: http_proxy
+            value: http://inet-proxy.k2.ericsson.se:8080
+          - name: https_proxy
+            value: http://inet-proxy.k2.ericsson.se:8080
+
+      nodeSelector:
+        type: sender
