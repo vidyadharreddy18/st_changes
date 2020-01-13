@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-mtasst-titansim
+  labels:
+    app.kubernetes.io/name: "mtas-st-chart-titansim"
+          #    app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+    helm.sh/chart: {{ include "mtas-st-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "mtas-st-chart-titansim"
+      #      app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "mtas-st-chart-titansim"
+        #        app.kubernetes.io/name: {{ include "mtas-st-chart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: sekilxc1236
+          image: "{{ .Values.titansimImage.repository }}:{{ .Values.titansimImage.tag }}"
+          imagePullPolicy: {{ .Values.titansimImage.pullPolicy }}
+          tty: true
+          stdin_open: true
+          #command: [ "/bin/bash", "-ce", "tail -f /dev/null" ]
+          ports:
+            - name: ssh
+              containerPort: 22
+              targetPort: 22
+              protocol: TCP
+          env:
+          - name: http_proxy
+            value: http://inet-proxy.k2.ericsson.se:8080
+          - name: https_proxy
+            value: http://inet-proxy.k2.ericsson.se:8080
+      nodeSelector:
+        type: titansim
